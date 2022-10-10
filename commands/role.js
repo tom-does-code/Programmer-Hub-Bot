@@ -1,7 +1,10 @@
 require('dotenv').config();
 
 const { SlashCommandBuilder, PermissionsBitField, EmbedBuilder } = require('discord.js');
-const { clientID } = process.env;
+const { clientID, logsID } = process.env;
+
+const staffLog = require('../templates/staff-logs');
+
 
 
 module.exports = {
@@ -56,5 +59,6 @@ module.exports = {
             .setAuthor({name: interaction.user.username, iconURL: interaction.user.avatarURL()})
             .setTimestamp()
         await interaction.reply({embeds: [roleEmbed]});
+        staffLog.execute('Added / Removed Role.', interaction.user, userAddRole, `Role: ${roleAdd.name} (${roleAdd.id}) ${roleStatus}`, interaction.channel);
     }
 }
