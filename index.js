@@ -6,7 +6,7 @@ require('dotenv').config();
 const { SlashCommandBuilder, Client, GatewayIntentBits, Collection } = require('discord.js');
 const { token } = process.env;
 
-const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages]});
+const client = new Client({intents: [GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildBans, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages]});
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
@@ -27,6 +27,19 @@ client.on('guildMemberAdd', async member => {
     console.log('added');
 
     await verifyChannel.send(`${member.user.toString()} Use /verify to gain access to the rest of the server.`);
+});
+
+client.on('messageCreate', async message => {
+    console.log('sent');
+    console.log(message.content);
+    if (message.content.includes('discord.gg/' || 'discordapp.com/invite/')) {
+        try {
+            await message.delete();
+        await message.channel.send(`${message.author.toString()} you are not allowed to send invite links!`);
+        } catch {
+            console.log('couldnt delete discord invite link message');
+        }
+    }
 })
 
 client.on('interactionCreate', async interaction => {

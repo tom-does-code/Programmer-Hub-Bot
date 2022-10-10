@@ -15,6 +15,7 @@ module.exports = {
 
             await member.roles.remove('1028970938181636116');
             await member.roles.add('1028971253249355806');
+            await member.roles.add('1029044260315611166');
         } catch {
             console.log('Error verify.js.');
         }
