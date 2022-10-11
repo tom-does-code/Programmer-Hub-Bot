@@ -25,6 +25,6 @@ module.exports = {
                 {name: 'Reason: ', value: options.getString('reason')}
             )
             .setTimestamp();
-        const staffMessage = await inter.channel.guild.channels.cache.find(channel => channel.id === '1029167997262233620').send({embeds: [reportEmbed]});
+        await inter.channel.guild.channels.cache.find(channel => channel.id === '1029167997262233620').send({embeds: [reportEmbed]});
         await inter.reply({content: 'Thank you for reporting this user, staff will be with you shortly.', ephemeral: true});
 }}

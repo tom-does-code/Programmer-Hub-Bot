@@ -30,8 +30,6 @@ client.on('guildMemberAdd', async member => {
 });
 
 client.on('messageCreate', async message => {
-    console.log('sent');
-    console.log(message.content);
     if (message.content.includes('discord.gg/' || 'discordapp.com/invite/')) {
         try {
             await message.delete();
