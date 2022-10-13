@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
+const { SlashCommandBuilder, PermissionsBitField, EmbedBuilder } = require('discord.js');
 
 const warns = require('../database/infractionsdata');
 
@@ -32,7 +32,7 @@ module.exports = {
 
         const warnCount = await warns.count({UserID: userWarned.id});
 
-        if (warnCount < 5) {
+        if (warnCount < 4) {
             const warnData = new warns({
                 UserID : userWarned.id,
                 ModeratorID : `${inter.user.tag} (${inter.user.id})`,
@@ -46,9 +46,22 @@ module.exports = {
             } catch {
                 console.log(`Can't DM user`);   
             }
-            await inter.reply({content: `${userWarned.tag} has been warned for ${warnReason}`});
+
+        const warnEmbed = new EmbedBuilder()
+            .setTitle('User Warned')
+            .setColor(0XA020F0)
+            .setDescription(`${userWarned} has been warned.`)
+            .setAuthor({name: inter.user.username, iconURL: inter.user.avatarURL()})
+            .addFields(
+                {name: 'Warned By: ', value: `${inter.user.tag} (${inter.user.id})`},
+                {name: 'Reason: ', value: warnReason},
+                {name: 'Total Warns: ', value: `${warnCount + 1} / 5`}
+            )
+            .setTimestamp()
+        await inter.reply({embeds: [warnEmbed]});
+
         } else {
-           if (warnCount >= 5) {
+           if (warnCount >= 4) {
             const banData = new warns({
                 UserID : userWarned.id,
                 ModeratorID : `${inter.user.tag} (${inter.user.id})`,
