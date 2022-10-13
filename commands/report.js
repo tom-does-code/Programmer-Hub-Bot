@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ChannelType } = require('discord.js');
+const reportData = require('../database/reportsdata');
 
 module.exports = {
     data : new SlashCommandBuilder()
@@ -27,4 +28,19 @@ module.exports = {
             .setTimestamp();
         await inter.channel.guild.channels.cache.find(channel => channel.id === '1029167997262233620').send({embeds: [reportEmbed]});
         await inter.reply({content: 'Thank you for reporting this user, staff will be with you shortly.', ephemeral: true});
+
+        const date = new Date();
+        
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+
+    const createdData = new reportData({
+        ReportAuthor : `${inter.user.tag} (${inter.user.id})`,
+        ReportedUser : `${options.getUser('user').tag}`,
+        ReportedUserID : options.getUser('user').id,
+        ReportReason : options.getString('reason'),
+        ReportDate : `${day}-${month}-${year} - DD/MM/YY`
+    })
+    await createdData.save().catch(e => console.log(e));
 }}

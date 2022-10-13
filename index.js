@@ -6,11 +6,23 @@ require('dotenv').config();
 const { SlashCommandBuilder, Client, GatewayIntentBits, Collection } = require('discord.js');
 const { token } = process.env;
 
+const mongoose = require('mongoose');
+
+
 const client = new Client({intents: [GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildBans, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages]});
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+mongoose.connect(process.env.mongoToken, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
+    console.log('Connected to database.');
+}).catch((err) => {
+    console.log(err);
+})
 
 for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);

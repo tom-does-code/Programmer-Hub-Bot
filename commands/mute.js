@@ -35,7 +35,12 @@ module.exports = {
             
             if (!memberTimeout || !memberTimeout.kickable) return interaction.reply({content: `User couldn't be found in this server!`, ephemeral: true});
 
-            await memberTimeout.timeout(timeoutLength, timeoutReason);
+            try {
+                await memberTimeout.timeout(timeoutLength, timeoutReason);
+            } catch {
+                console.log('Error timing out user.');
+                return interaction.reply({content: `Couldn't mute user.`, ephemeral: true});
+            }
 
             const timeoutEmbed = new EmbedBuilder()
                 .setColor(0XA020F0)
