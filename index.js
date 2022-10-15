@@ -31,6 +31,20 @@ for (const file of commandFiles) {
     client.commands.set(command.data.name, command);
 }
 
+client.on('messageCreate', async (message) => {
+
+    const memberObject = message.guild.members.cache.get(message.author.id.toString());
+
+    if (!memberObject.nickname) return;
+
+    const prevNickname = memberObject.nickname;
+
+    if (prevNickname.includes('[AFK]')) {
+        await memberObject.setNickname(memberObject.nickname.replace('[AFK]', ''));
+        await message.channel.send(`Welcome back, ${message.author.toString()}!`);
+    }
+})
+
 client.on('guildMemberAdd', async member => {
     const unverifiedRole = member.guild.roles.cache.get('1028970938181636116');
     const verifyChannel = member.guild.channels.cache.get('1028970914815168583');

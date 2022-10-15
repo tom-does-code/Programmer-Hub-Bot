@@ -17,7 +17,7 @@ module.exports = {
             option.setName('reason').setDescription('The reason of the kick')
             .setRequired(true)
         )
-        .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageMessages),
+        .setDefaultMemberPermissions(PermissionsBitField.Flags.KickMembers),
     async execute(interaction) {
         const userObject = interaction.options.getUser('target');
         const kickReason = interaction.options.getString('reason');

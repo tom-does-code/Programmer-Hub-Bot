@@ -38,7 +38,7 @@ module.exports = {
             .setAuthor({name: user.tag, iconURL: user.avatarURL()})
             .setTimestamp()
 
-        await inter.reply({embeds: [ballEmbed]});
+        inter.reply({embeds: [ballEmbed]});
     }
         
 }
