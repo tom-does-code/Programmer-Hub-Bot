@@ -6,6 +6,11 @@ const StaffStrikes = new mongoose.Schema({
         required : true
     },
 
+    UserID : {
+        type : Number,
+        required : true
+    },
+
     Reason : {
         type : String,
         required : true
