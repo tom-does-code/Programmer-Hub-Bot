@@ -17,7 +17,7 @@ module.exports =  {
             option.setName('reason').setDescription('The reason you are striking this user.')
             .setRequired(true)
             )
-            .setDefaultMemberPermissions(PermissionsBitField.Flags.ModerateMembers),
+            .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageEvents),
 
     async execute(inter) {
         const date = new Date();

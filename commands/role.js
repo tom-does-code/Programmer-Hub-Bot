@@ -19,7 +19,7 @@ module.exports = {
             option.setName('role').setDescription('The role you want to add/remove to the target.')
             .setRequired(true)
             )
-        .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageRoles),
+        .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageEvents),
 
     async execute(interaction) {
         

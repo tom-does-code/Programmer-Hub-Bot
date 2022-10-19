@@ -18,7 +18,7 @@ module.exports = {
             option.setName('reason').setDescription('The reason for the ban.')
             .setRequired(true)
             )
-    .setDefaultMemberPermissions(PermissionsBitField.Flags.ModerateMembers),
+    .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageEvents),
 
     async execute(interaction) {
         const banUser = interaction.options.getUser('target');

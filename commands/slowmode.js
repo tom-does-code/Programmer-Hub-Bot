@@ -18,7 +18,7 @@ module.exports = {
             option.setName('cooldown').setDescription('The amount of seconds you want on the cooldown.')
             .setRequired(true)
             )
-        .setDefaultMemberPermissions(PermissionsBitField.Flags.ModerateMembers),
+        .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageEvents),
 
     async execute(inter) {
         const { options } = inter;
