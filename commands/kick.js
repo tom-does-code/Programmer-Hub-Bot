@@ -17,7 +17,7 @@ module.exports = {
             option.setName('reason').setDescription('The reason of the kick')
             .setRequired(true)
         )
-        .setDefaultMemberPermissions(PermissionsBitField.Flags.KickMembers),
+        .setDefaultMemberPermissions(PermissionsBitField.Flags.ModerateMembers),
     async execute(interaction) {
         const userObject = interaction.options.getUser('target');
         const kickReason = interaction.options.getString('reason');
@@ -25,7 +25,7 @@ module.exports = {
         const memberObject = interaction.guild.members.cache.get(userObject.id);
 
         if (!memberObject.kickable) return interaction.reply({content: 'I am unable to kick that player!', ephemeral: true});
-
+        if (interaction.member.roles.highest.position <= interaction.guild.members.cache.get(userObject.id).roles.highest.position) return interaction.reply({content: 'Your role is not high enough to kick this user!', ephemeral: true});
         await memberObject.kick(`Kicked by ${interaction.user.tag} (${interaction.user.id} for: ${kickReason})`);
 
         const kickEmbed = new EmbedBuilder()

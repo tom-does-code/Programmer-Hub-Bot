@@ -18,13 +18,15 @@ module.exports = {
             option.setName('reason').setDescription('The reason for the ban.')
             .setRequired(true)
             )
-    .setDefaultMemberPermissions(PermissionsBitField.Flags.BanMembers),
+    .setDefaultMemberPermissions(PermissionsBitField.Flags.ModerateMembers),
 
     async execute(interaction) {
         const banUser = interaction.options.getUser('target');
         const banReason = interaction.options.getString('reason');
 
         if (!banUser) return;
+
+        if (interaction.member.roles.highest.position < interaction.guild.members.cache.get(banUser.id).roles.highest.position) return interaction.reply({content: 'Your role is not high enough to ban this user!', ephemeral: true});
 
         const memberObject = interaction.guild.members.cache.get(banUser.id);
 

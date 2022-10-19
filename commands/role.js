@@ -22,10 +22,12 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageRoles),
 
     async execute(interaction) {
+        
         const userAddRole = interaction.options.getUser('target');
         const roleAdd = interaction.options.getRole('role');
 
         if (!roleAdd.editable) return interaction.reply({content: 'Role is higher than the bots role!', ephemeral: true});
+        if (interaction.member.roles.highest.position <= roleAdd.position) return interaction.reply({content: 'Your role is not high enough to do this!', ephemeral: true});
 
         const memberAddRole = interaction.guild.members.cache.get(userAddRole.id);
 

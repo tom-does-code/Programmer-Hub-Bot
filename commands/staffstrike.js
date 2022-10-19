@@ -14,10 +14,10 @@ module.exports =  {
             .setRequired(true)
             )
         .addStringOption(option => 
-            option.setName('reason').setDescription('The reason you are striking this user. Please include full detail otherwise the strike will be denied.')
+            option.setName('reason').setDescription('The reason you are striking this user.')
             .setRequired(true)
             )
-            .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
+            .setDefaultMemberPermissions(PermissionsBitField.Flags.ModerateMembers),
 
     async execute(inter) {
         const date = new Date();
@@ -30,6 +30,9 @@ module.exports =  {
         const userStrikeOption = options.getUser('user');
         const reasonStrikeOption = options.getString('reason');
 
+
+        if (inter.member.roles.highest.position < inter.guild.members.cache.get(userStrikeOption.id).roles.highest.position) return inter.reply({content: 'Your role is not high enough to strike this user!', ephemeral: true});
+
         const newData = new staffStrike({
             IssuedBy : `${user.tag} (${user.id})`,
             UserID : userStrikeOption.id,
@@ -39,6 +42,21 @@ module.exports =  {
 
         await newData.save().catch(e => console.log('e'));
 
-        staffLogs.execute('Strike', `${user.tag} (${user.id})`, `${userStrikeOption.tag} (${userStrikeOption.id})`, reasonStrikeOption, inter.channel);
+        const strikeCount = await staffStrike.count({UserID: userStrikeOption.id});
+
+        const strikeEmbed = new EmbedBuilder()
+            .setTitle('User Striked')
+            .setColor(0XA020F0)
+            .addFields(
+                {name: 'User', value: userStrikeOption.tag},
+                {name: 'Striked By', value: user.tag},
+                {name: 'Reason', value: reasonStrikeOption}
+            )
+            .setTimestamp()
+            .setFooter({text: `Strike ${strikeCount} / 3`})
+        
+        await inter.reply({embeds: [strikeEmbed]});
+
+        staffLogs.execute('Strike', user, userStrikeOption , reasonStrikeOption, inter.channel);
     }
 }
