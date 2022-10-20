@@ -24,6 +24,8 @@ module.exports = {
 
         const memberObject = interaction.guild.members.cache.get(userObject.id);
 
+        if (kickReason.length >= 800) return interaction.reply('Reason too long.');
+
         if (!memberObject.kickable) return interaction.reply({content: 'I am unable to kick that player!', ephemeral: true});
         if (interaction.member.roles.highest.position <= interaction.guild.members.cache.get(userObject.id).roles.highest.position) return interaction.reply({content: 'Your role is not high enough to kick this user!', ephemeral: true});
         await memberObject.kick(`Kicked by ${interaction.user.tag} (${interaction.user.id} for: ${kickReason})`);

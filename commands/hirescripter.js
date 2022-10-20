@@ -18,6 +18,8 @@ module.exports = {
         const jobString = options.getString('job');
         const paymentString = options.getString('payment');
 
+        if (jobString.length >= 700 || paymentString.length >= 200) return inter.reply({content: 'Text is too long.', ephemeral: true});
+
         if (paymentString && jobString) {
             await inter.reply({content: `Scripter hiring request has been sent for approval.`, ephemeral: true});
 

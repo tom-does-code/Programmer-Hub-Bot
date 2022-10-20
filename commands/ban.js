@@ -25,6 +25,7 @@ module.exports = {
         const banReason = interaction.options.getString('reason');
 
         if (!banUser) return;
+        if (banReason.length >= 800) return interaction.reply({content: 'Text is too long.', ephemeral: true});
 
         if (interaction.member.roles.highest.position < interaction.guild.members.cache.get(banUser.id).roles.highest.position) return interaction.reply({content: 'Your role is not high enough to ban this user!', ephemeral: true});
 

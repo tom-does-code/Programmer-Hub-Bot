@@ -30,6 +30,8 @@ module.exports = {
         const userWarned = options.getUser('user');
         const warnReason = options.getString('reason');
 
+        if (warnReason.length >= 800) return inter.reply({content: 'Reason is too long.', ephemeral: true});
+
         const warnCount = await warns.count({UserID: userWarned.id});
 
         if (warnCount < 4) {

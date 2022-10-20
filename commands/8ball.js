@@ -15,6 +15,8 @@ module.exports = {
 
         const question = options.getString('question');
 
+        if (question.length > 300) return inter.reply('Question is too long!');
+
         const responses = [
             'wtf no lmao',
             'yeah of course',

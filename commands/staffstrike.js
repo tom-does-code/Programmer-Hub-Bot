@@ -30,6 +30,7 @@ module.exports =  {
         const userStrikeOption = options.getUser('user');
         const reasonStrikeOption = options.getString('reason');
 
+        if (reasonStrikeOption.length >= 800) return inter.reply({content: 'Reason is too long.', ephemeral: true});
 
         if (inter.member.roles.highest.position < inter.guild.members.cache.get(userStrikeOption.id).roles.highest.position) return inter.reply({content: 'Your role is not high enough to strike this user!', ephemeral: true});
 
