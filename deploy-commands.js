@@ -19,6 +19,6 @@ for (const file of commandFiles) {
     commands.push(command.data.toJSON());
 }
 
-rest.put(Routes.applicationGuildCommands(clientID, guildID), {body: commands})
+rest.put(Routes.applicationCommands(clientID), {body: commands})
     .then((data) => console.log(`Registed ${data.length} commands`))
     .catch(console.error);

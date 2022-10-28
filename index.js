@@ -8,6 +8,8 @@ const { token } = process.env;
 
 const mongoose = require('mongoose');
 
+global['hexColour']=0XA020F0;
+
 
 const client = new Client({intents: [GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildBans, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages]});
 

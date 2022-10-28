@@ -19,7 +19,15 @@ module.exports = {
         const joinDate = moment.utc(member.joinedAt).format('MMM Do YYYY, h:mm A');
         const creationDate = moment.utc(userOption.createdAt).format('MMM Do YYYY, h:mm A');
 
-        const highestRole = member.roles.highest;
+        const roles = member._roles;
+
+        let allRoles = '';
+        let currentRolePosition = 0;    
+
+        for (let i = 0; i < roles.length; i++ ) {
+            allRoles += `<@&${roles[currentRolePosition + 1]}>`;
+            currentRolePosition += 1;
+        };
 
         const infoEmbed = new EmbedBuilder()
             .setTitle(`${userOption.username}'s Information`)
@@ -27,7 +35,7 @@ module.exports = {
             .addFields(
                 {name: 'Joined', value: joinDate, inline: true},
                 {name: 'Registered', value: creationDate, inline: true},
-                {name: 'Highest Role', value: highestRole.toString()},
+                {name: `Roles [${member._roles.length}]`, value: allRoles},
             )
             .setAuthor({name: inter.user.username, iconURL: inter.user.avatarURL()})
             .setTimestamp()
