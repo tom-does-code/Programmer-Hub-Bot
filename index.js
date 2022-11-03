@@ -3,15 +3,22 @@ const fs = require('node:fs');
 
 require('dotenv').config();
 
-const { SlashCommandBuilder, Client, GatewayIntentBits, Collection } = require('discord.js');
+const { SlashCommandBuilder, Client, GatewayIntentBits, Collection, Partials } = require('discord.js');
 const { token } = process.env;
+
+const { User, Message, GuildMember, ThreadMember } = Partials;
 
 const mongoose = require('mongoose');
 
 global['hexColour']=0XA020F0;
 
+const memberAdd = require('./events/memberAdded');
 
-const client = new Client({intents: [GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildBans, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages]});
+
+const client = new Client({
+    intents: [GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildBans, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessageTyping],
+    partials: [User, Message, GuildMember, ThreadMember]
+});
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
@@ -48,6 +55,8 @@ client.on('messageCreate', async (message) => {
 })
 
 client.on('guildMemberAdd', async member => {
+    memberAdd.execute(member.user, member.guild);
+
     const unverifiedRole = member.guild.roles.cache.get('1028970938181636116');
     const verifyChannel = member.guild.channels.cache.get('1028970914815168583');
 

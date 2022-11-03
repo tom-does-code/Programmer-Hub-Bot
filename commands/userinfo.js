@@ -19,15 +19,14 @@ module.exports = {
         const joinDate = moment.utc(member.joinedAt).format('MMM Do YYYY, h:mm A');
         const creationDate = moment.utc(userOption.createdAt).format('MMM Do YYYY, h:mm A');
 
-        const roles = member._roles;
+        const roles = inter.guild.members.cache.get(userOption.id).roles.cache.sorted((roleA,roleB)=>roleB.position-roleA.position);
 
-        let allRoles = '';
-        let currentRolePosition = 0;    
+        let rolesOrderString = '';
 
-        for (let i = 0; i < roles.length; i++ ) {
-            allRoles += `<@&${roles[currentRolePosition + 1]}>`;
-            currentRolePosition += 1;
-        };
+        roles.forEach(function(item){
+            if(item.name==='@everyone') return
+            rolesOrderString += `${item.toString()} `
+        })
 
         const infoEmbed = new EmbedBuilder()
             .setTitle(`${userOption.username}'s Information`)
@@ -35,7 +34,7 @@ module.exports = {
             .addFields(
                 {name: 'Joined', value: joinDate, inline: true},
                 {name: 'Registered', value: creationDate, inline: true},
-                {name: `Roles [${member._roles.length}]`, value: allRoles},
+                {name: `Roles [${member._roles.length}]`, value: rolesOrderString},
             )
             .setAuthor({name: inter.user.username, iconURL: inter.user.avatarURL()})
             .setTimestamp()
