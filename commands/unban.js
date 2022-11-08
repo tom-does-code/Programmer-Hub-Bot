@@ -4,13 +4,16 @@ module.exports = {
     data : new SlashCommandBuilder()
         .setName('unban')
         .setDescription('Unbans the user with the specified ID.')
-        .addIntegerOption(option =>
+        .addStringOption(option =>
             option.setName('userid').setDescription('The ID of the user you want to unban.')
             .setRequired(true)
             )
-        .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageEvents),
+        .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
 
         async execute(inter) {
-            const userID = inter.options.getInteger('userid')
+            const userID = inter.options.getString('userid');
+
+            await inter.guild.members.unban(userID);
+            inter.reply({content: 'User has been unbanned.', ephemeral: true});
         }
     }
